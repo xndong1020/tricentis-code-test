@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 import SearchItem from './SearchItem'
 
 interface SearchItemsListProps {
@@ -6,12 +6,13 @@ interface SearchItemsListProps {
 }
 
 const SearchItemsList: FC<SearchItemsListProps> = ({ items }) => {
+  console.log('SearchItemsList rendered')
   return (
-    <div className="lists">
+    <div className='lists'>
       {items &&
-        items.map((item, index) => <SearchItem item={item} key={index} />)}
+        items.map((item, index) => <SearchItem item={item} key={item} />)}
     </div>
   )
 }
 
-export default SearchItemsList
+export default memo(SearchItemsList)

@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import SearchItemsList from './component/SearchItemsList'
+import useDebounce from './hooks/useDebounce'
 import { RootResponse } from './typings/SearchResponse'
 import axios from './utils/axios'
 
@@ -46,15 +47,17 @@ const App: FC = () => {
     }
   }, [initSearchItems, items, searchResult])
 
+  const debouncedSearch = useDebounce(searchTerm, 500)
+
   useEffect(() => {
     const callApi = async () => {
-      const collectionNamesFromSearch = await fetchApi(searchTerm)
+      const collectionNamesFromSearch = await fetchApi(debouncedSearch)
       if (!!collectionNamesFromSearch)
         setSearchResult(collectionNamesFromSearch)
     }
 
-    if (searchTerm) callApi()
-  }, [searchTerm])
+    if (debouncedSearch) callApi()
+  }, [debouncedSearch])
 
   const fetchApi = async (
     searchTerm: string
@@ -67,7 +70,6 @@ const App: FC = () => {
         .filter(x => typeof x !== 'undefined')
         .map(items => items.collectionName)
         .sort()
-      console.log('collectionNames', collectionNames)
       return Array.from(new Set(collectionNames)).slice(0, ROTATION_SIZE)
     } catch (error) {
       console.error(error)
@@ -76,7 +78,6 @@ const App: FC = () => {
 
   const handleSearch = (value: string) => {
     setSearchTerm(value)
-    console.log('search', value)
   }
   return (
     <div className='app-container'>
