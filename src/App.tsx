@@ -16,8 +16,27 @@ const App: FC = () => {
     const init = () => {
       return setInterval(() => {
         setItems(prev => {
-          const [first, ...rest] = prev
-          return [...rest, first]
+          if (searchResult.length === 0) {
+            const [first, ...rest] = prev
+            return [...rest, first]
+          } else {
+            const itemsFromInit = prev.filter(item =>
+              initSearchItems.includes(item)
+            )
+            itemsFromInit.shift()
+            if (itemsFromInit.length === 0) {
+              setSearchResult(prev => {
+                const [first, ...rest] = prev
+                return [...rest, first]
+              })
+              return searchResult
+            } else {
+              return [
+                ...itemsFromInit,
+                ...searchResult.slice(0, ROTATION_SIZE - itemsFromInit.length)
+              ]
+            }
+          }
         })
       }, 1000)
     }
