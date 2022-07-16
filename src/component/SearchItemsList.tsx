@@ -6,7 +6,6 @@ interface SearchItemsListProps {
 }
 
 const SearchItemsList: FC<SearchItemsListProps> = ({ items }) => {
-  console.log('SearchItemsList rendered')
   return (
     <div className='lists'>
       {items &&

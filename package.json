@@ -2,6 +2,7 @@
   "name": "tricentis-code-test",
   "version": "0.1.0",
   "private": true,
+  "author": "Nicole Dong",
   "dependencies": {
     "axios": "^0.27.2",
     "react": "^18.2.0",

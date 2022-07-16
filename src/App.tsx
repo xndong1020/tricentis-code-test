@@ -17,6 +17,7 @@ const App: FC = () => {
     const init = () => {
       return setInterval(() => {
         setItems(prev => {
+          // if no api calls happened hence no query results, then shuffle default items
           if (searchResult.length === 0) {
             const [first, ...rest] = prev
             return [...rest, first]
@@ -25,6 +26,7 @@ const App: FC = () => {
               initSearchItems.includes(item)
             )
             itemsFromInit.shift()
+            // if no default items left, then shuffle query results
             if (itemsFromInit.length === 0) {
               setSearchResult(prev => {
                 const [first, ...rest] = prev
@@ -32,6 +34,7 @@ const App: FC = () => {
               })
               return searchResult
             } else {
+              // calculate how many elements are left from default items, and how many elements from query results need to append to bottom
               return [
                 ...itemsFromInit,
                 ...searchResult.slice(0, ROTATION_SIZE - itemsFromInit.length)
@@ -55,7 +58,7 @@ const App: FC = () => {
       if (!!collectionNamesFromSearch)
         setSearchResult(collectionNamesFromSearch)
     }
-
+    // debounced api call for better performance
     if (debouncedSearch) callApi()
   }, [debouncedSearch])
 
@@ -76,7 +79,7 @@ const App: FC = () => {
     }
   }
 
-  const handleSearch = (value: string) => {
+  const handleSearch = (value: string): void => {
     setSearchTerm(value)
   }
   return (
