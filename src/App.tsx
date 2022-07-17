@@ -59,7 +59,7 @@ const App: FC = () => {
         setSearchResult(collectionNamesFromSearch)
     }
     // debounced api call for better performance
-    if (debouncedSearch) callApi()
+    if (debouncedSearch) callApi().catch(console.error)
   }, [debouncedSearch])
 
   const fetchApi = async (
